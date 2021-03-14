@@ -1,7 +1,7 @@
 <div align="center">
   
 <a href="https://igrabber.tifodao.tk/">
-  <img alt="InstagramGrabber" src="https://github.com/iTPr0/InstagramGrabber/blob/master/igrabber.png?raw=true" width="60" />
+  <img alt="InstagramGrabber" src="https://github.com/iTPr0/InstagramGrabber/blob/master/igrabber.png?raw=true" width="60%" />
 </a>
 
 # Instagram - Anonymous
