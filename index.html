@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Instagram Grabber</title>
+        <link rel="shortcut icon" href="img/instagram.png" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div class="instagrabber-inputfield">
+            <h3>Insira o nome de usuário do Instagram:</h3>
+            <input type="text" id="txtUsername">
+            <br>
+            <button onclick="request_info()">Agarrar!</button>
+        </div>
+        <div class="instagrabber-response">
+            <div class="instagrabber-info-list">
+                <ul>
+                    <li id="name">Nome completo:</li>
+                    <li id="biography">Biografia:</li>
+                    <li id="website">Local na rede Internet:</li>
+                    <li id="follower">Seguidores:</li>
+                    <li id="following">Seguindo:</li>
+                    <li id="post_count">Número de posts:</li>
+                    <li id="highlights">highlights:</li>
+                    <li id="private">É privado:</li>
+                    <li id="verified">É verificado:</li>
+                    <li id="id">ID:</li>
+                </ul>
+            </div>
+            <div class="containter1">
+                <img id="instagrabber-profile-pic" class="modal-img" style="max-width:60%; cursor:pointer;" onclick="onClick(this)" class="modal-hover-opacity">
+            </div>
+            <div id="modal01" class="modal" onclick="this.style.display='none'">
+                <span class="close" style="cursor: pointer;">&times;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <div class="modal-content">
+                    <img id="img01" style="max-width:60%">
+                </div>
+            </div>
+            <div class="instagrabber-posts" style="cursor: pointer;"></div>
+        </div>
+        <div class="footer">
+            <div class="row">
+                &copy; 2021 <a href="https://pt.wikipedia.org/wiki/Direito_autoral">Copyright</a>&trade; Todos os direitos reservados.<br/>
+                Desenvolvido por <a href="https://tifodao.tk">Diego Melo.</a>
+            </div>
+        </div>
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/typed.js"></script>
+        <script src="js/photo.js"></script>
+        <script>
+            function request_info() {
+                const username = $("#txtUsername").val();
+                if (username !== "") {
+
+                    $.ajax({
+                        type: 'get',
+                        url: "https://instagram.com/" + username + "/?__a=1",
+                        success: function(data) {
+
+                            let profile_pic_url_hd = data.graphql.user.profile_pic_url_hd;
+                            let full_name = data.graphql.user.full_name;
+                            let biography = data.graphql.user.biography;
+                            let external_url = data.graphql.user.external_url;
+                            let follower_count = data.graphql.user.edge_followed_by.count;
+                            let follows_count = data.graphql.user.edge_follow.count;
+                            let media_count = data.graphql.user.edge_owner_to_timeline_media.count;
+                            let hightlight_count = data.graphql.user.highlight_reel_count;
+                            let is_private = data.graphql.user.is_private;
+                            let is_verified = data.graphql.user.is_verified;
+                            let id = data.graphql.user.id;
+
+                            $(".instagrabber-profile-pic").empty();
+                            $(".instagrabber-posts").empty();
+
+                            $("#instagrabber-profile-pic").attr("src", data.graphql.user.profile_pic_url_hd)
+
+                            // let profile_pic_img = $("<img>")
+                            // profile_pic_img.attr("src", data.graphql.user.profile_pic_url_hd)
+                            // profile_pic_img.appendTo(".instagrabber-profile-pic");
+
+                            $("#loadedPic").attr("src", profile_pic_url_hd);
+                            $("#name").html("Nome completo: " + full_name);
+                            $("#biography").html("Biografia: " + biography);
+                            $("#website").html("Site vinculado: " + external_url);
+                            $("#follower").html("Seguidores: " + follower_count);
+                            $("#following").html("Seguindo: " + follows_count);
+                            $("#post_count").html("Número de posts: " + media_count);
+                            $("#highlights").html("Número de destaques: " + hightlight_count);
+                            $("#private").html("Privado: " + is_private);
+                            $("#verified").html("Verificado: " + is_verified);
+                            $("#id").html("ID: " + id);
+
+                            if (media_count > 0) {
+                                for (let i = 0; i < media_count; i++) {
+                                    let temp_img = $("<img onclick = 'onClick(this)' class='modal-img'>")
+                                    // console.log(data.graphql.user.edge_owner_to_timeline_media.edges[i].node.display_url)
+                                    temp_img.attr("src", data.graphql.user.edge_owner_to_timeline_media.edges[i].node.display_url)
+                                    temp_img.appendTo(".instagrabber-posts");
+                                    if (i === 11) {
+                                        break;
+                                    }
+                                }
+                                $("#post").click((event)=>{
+                                    console.log($(event.target).attr("src"));
+                                }
+                                );
+                            }
+                        }
+                    });
+                }
+            }
+        </script>
+    </body>
+</html>
