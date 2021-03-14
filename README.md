@@ -18,9 +18,6 @@
 
 ---
 
-
----
-
 ## Lista de recursos 🧐
 
 -   [x] Instagram Fotos
