@@ -26,7 +26,7 @@
 
 ## 🚀 Começando.
 
-Este projeto está implantado em https://igrabber.tifodao.tk
+Este projeto está implantado em itpr0.github.io/instagramgrabber
 
 Guia para implantação local -
 
